@@ -157,6 +157,11 @@ export const api = {
     authenticatedFetch(`/api/projects/${encodeURIComponent(projectId)}/toggle-notify`, {
       method: 'POST',
     }),
+  setProjectColor: (projectId, color) =>
+    authenticatedFetch(`/api/projects/${encodeURIComponent(projectId)}/color`, {
+      method: 'PUT',
+      body: JSON.stringify({ color }),
+    }),
   readFile: (projectId, filePath) =>
     authenticatedFetch(`/api/projects/${projectId}/file?filePath=${encodeURIComponent(filePath)}`),
   readFileBlob: (projectId, filePath) =>

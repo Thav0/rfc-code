@@ -123,6 +123,7 @@ export function useSidebarController({
   const [editingProject, setEditingProject] = useState<string | null>(null);
   const [showNewProject, setShowNewProject] = useState(false);
   const [editingName, setEditingName] = useState('');
+  const [editingColor, setEditingColor] = useState<string | null>(null);
   const [initialSessionsLoaded, setInitialSessionsLoaded] = useState<Set<string>>(new Set());
   const [currentTime, setCurrentTime] = useState(new Date());
   const [projectSortOrder, setProjectSortOrder] = useState<ProjectSortOrder>('name');
@@ -685,11 +686,13 @@ export function useSidebarController({
     // display-name mutations that happen while the input is open.
     setEditingProject(project.projectId);
     setEditingName(project.displayName);
+    setEditingColor(project.color ?? null);
   }, []);
 
   const cancelEditing = useCallback(() => {
     setEditingProject(null);
     setEditingName('');
+    setEditingColor(null);
   }, []);
 
   const saveProjectName = useCallback(
@@ -698,19 +701,28 @@ export function useSidebarController({
     async (projectId: string) => {
       try {
         const response = await api.renameProject(projectId, editingName);
-        if (response.ok) {
-          await paletteOps.refreshProjects();
-        } else {
+        if (!response.ok) {
           console.error('Failed to rename project');
         }
+
+        const originalColor = projects.find((project) => project.projectId === projectId)?.color ?? null;
+        if (editingColor !== originalColor) {
+          const colorResponse = await api.setProjectColor(projectId, editingColor);
+          if (!colorResponse.ok) {
+            console.error('Failed to set project color');
+          }
+        }
+
+        await paletteOps.refreshProjects();
       } catch (error) {
         console.error('Error renaming project:', error);
       } finally {
         setEditingProject(null);
         setEditingName('');
+        setEditingColor(null);
       }
     },
-    [editingName, paletteOps],
+    [editingColor, editingName, paletteOps, projects],
   );
 
   const showDeleteSessionConfirmation = useCallback(
@@ -944,6 +956,7 @@ export function useSidebarController({
     editingProject,
     showNewProject,
     editingName,
+    editingColor,
     initialSessionsLoaded,
     currentTime,
     projectSortOrder,
@@ -990,6 +1003,7 @@ export function useSidebarController({
     expandSidebar,
     setShowNewProject,
     setEditingName,
+    setEditingColor,
     setEditingSession,
     setEditingSessionName,
     searchMode,

@@ -77,7 +77,8 @@
     "attentionRequiredIndicator": "Session needs attention",
     "processingSessionIndicator": "Processing session",
     "idleSessionIndicator": "Idle session",
-    "deleteSessionOptions": "Archive or permanently delete this session"
+    "deleteSessionOptions": "Archive or permanently delete this session",
+    "resizeSidebar": "Drag to resize, double-click to reset"
   },
   "navigation": {
     "chat": "Chat",

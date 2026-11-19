@@ -153,6 +153,7 @@ const rebuildProjectsTableWithPrimaryKeySchema = (db: Database): void => {
     addColumnToTableIfNotExists(db, 'projects', columnNames, 'isStarred', 'BOOLEAN DEFAULT 0');
     addColumnToTableIfNotExists(db, 'projects', columnNames, 'isArchived', 'BOOLEAN DEFAULT 0');
     addColumnToTableIfNotExists(db, 'projects', columnNames, 'notifyEnabled', 'BOOLEAN DEFAULT 0');
+    addColumnToTableIfNotExists(db, 'projects', columnNames, 'color', 'TEXT DEFAULT NULL');
     db.exec(`
       UPDATE projects
       SET project_id = ${SQLITE_UUID_SQL}
@@ -200,7 +201,8 @@ const rebuildProjectsTableWithPrimaryKeySchema = (db: Database): void => {
         custom_project_name TEXT DEFAULT NULL,
         isStarred BOOLEAN DEFAULT 0,
         isArchived BOOLEAN DEFAULT 0,
-        notifyEnabled BOOLEAN DEFAULT 0
+        notifyEnabled BOOLEAN DEFAULT 0,
+        color TEXT DEFAULT NULL
       )
     `);
     db.exec(`

@@ -17,7 +17,18 @@
     "projects": "projects",
     "noMatchingProjects": "No matching projects",
     "tryDifferentSearch": "Try adjusting your search term",
-    "runClaudeCli": "Run Claude CLI in a project directory to get started"
+    "runClaudeCli": "Run Claude CLI in a project directory to get started",
+    "noColor": "No color",
+    "colors": {
+      "red": "Red",
+      "orange": "Orange",
+      "yellow": "Yellow",
+      "green": "Green",
+      "teal": "Teal",
+      "blue": "Blue",
+      "violet": "Violet",
+      "pink": "Pink"
+    }
   },
   "app": {
     "title": "RFC Code",
@@ -66,7 +77,8 @@
     "attentionRequiredIndicator": "Session needs attention",
     "processingSessionIndicator": "Processing session",
     "idleSessionIndicator": "Idle session",
-    "deleteSessionOptions": "Archive or permanently delete this session"
+    "deleteSessionOptions": "Archive or permanently delete this session",
+    "resizeSidebar": "Drag to resize, double-click to reset"
   },
   "navigation": {
     "chat": "Chat",

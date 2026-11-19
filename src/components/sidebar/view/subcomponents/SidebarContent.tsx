@@ -4,6 +4,7 @@ import type { TFunction } from 'i18next';
 import { ScrollArea } from '../../../../shared/view/ui';
 import type { ConversationSearchResults, SearchProgress } from '../../hooks/useSidebarController';
 import type { SidebarProfileChip } from '../../hooks/useSidebarProfileChip';
+import { useSidebarWidth } from '../../hooks/useSidebarWidth';
 import type { SidebarSearchMode } from '../../types/types';
 
 import SidebarArchivedPanel, { type SidebarArchivedPanelProps } from './SidebarArchivedPanel';
@@ -73,6 +74,7 @@ export default function SidebarContent({
 }: SidebarContentProps) {
   const showConversationSearch = searchMode === 'conversations' && searchFilter.trim().length >= 2;
   const selectedProject = projectSelectorProps.selectedProject;
+  const { width, containerRef, handleProps } = useSidebarWidth();
 
   useEffect(() => {
     let baseTitle = 'RFC Code';
@@ -84,7 +86,20 @@ export default function SidebarContent({
   }, [selectedProject]);
 
   return (
-    <div className="flex h-full flex-col bg-background/80 backdrop-blur-sm md:w-[264px] md:select-none">
+    <div
+      ref={containerRef}
+      className="relative flex h-full flex-col bg-background/80 backdrop-blur-sm md:select-none"
+      // The mobile drawer sizes itself; only the desktop column is resizable.
+      style={isMobile ? undefined : { width }}
+    >
+      {!isMobile && (
+        <div
+          {...handleProps}
+          aria-label={t('tooltips.resizeSidebar')}
+          title={t('tooltips.resizeSidebar')}
+          className="absolute inset-y-0 right-0 z-20 w-1 cursor-col-resize touch-none transition-colors duration-150 ease-out hover:bg-primary/40 focus-visible:bg-primary/40 focus-visible:outline-none"
+        />
+      )}
       <SidebarHeader isPWA={isPWA} isMobile={isMobile} onCollapseSidebar={onCollapseSidebar} t={t} />
 
       <div className="flex-shrink-0 space-y-1.5 px-2 py-2">

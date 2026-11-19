@@ -560,6 +560,8 @@ export type ProjectRepositoryRow = {
   isStarred: number;
   isArchived: number;
   notifyEnabled: number;
+  /** Hex color (`#rrggbb`) the user picked to tell projects apart, or null. */
+  color?: string | null;
 };
 
 /**

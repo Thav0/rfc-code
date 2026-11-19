@@ -82,6 +82,8 @@ export interface Project {
   path?: string;
   isStarred?: boolean;
   notifyEnabled?: boolean;
+  /** `#rrggbb` color the user picked to tell projects apart in the sidebar. */
+  color?: string | null;
   sessions?: ProjectSession[];
   sessionMeta?: ProjectSessionMeta;
   taskmaster?: ProjectTaskmasterInfo;

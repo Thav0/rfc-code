@@ -5,7 +5,7 @@ import type { TFunction } from 'i18next';
 import { cn } from '../../../../lib/utils';
 import type { Project } from '../../../../types/app';
 import type { MCPServerStatus } from '../../types/types';
-import { filterProjects } from '../../utils/utils';
+import { filterProjects, getPathBasename } from '../../utils/utils';
 
 import SidebarProjectMenuRow from './SidebarProjectMenuRow';
 
@@ -15,12 +15,14 @@ export type SidebarProjectSelectorProps = {
   deletingProjects: Set<string>;
   editingProject: string | null;
   editingName: string;
+  editingColor: string | null;
   tasksEnabled: boolean;
   mcpServerStatus: MCPServerStatus;
   isRefreshing: boolean;
   isProjectStarred: (projectId: string) => boolean;
   isProjectNotifyEnabled: (projectId: string) => boolean;
   onEditingNameChange: (value: string) => void;
+  onEditingColorChange: (value: string | null) => void;
   onProjectSelect: (project: Project) => void;
   onToggleStarProject: (projectId: string) => void;
   onToggleNotifyProject: (projectId: string) => void;
@@ -42,12 +44,14 @@ export default function SidebarProjectSelector({
   deletingProjects,
   editingProject,
   editingName,
+  editingColor,
   tasksEnabled,
   mcpServerStatus,
   isRefreshing,
   isProjectStarred,
   isProjectNotifyEnabled,
   onEditingNameChange,
+  onEditingColorChange,
   onProjectSelect,
   onToggleStarProject,
   onToggleNotifyProject,
@@ -104,17 +108,13 @@ export default function SidebarProjectSelector({
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-label={t('projects.title')}
+        title={selectedProject?.fullPath ? getPathBasename(selectedProject.fullPath) : undefined}
       >
-        <Folder className="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground" />
-        <span className="min-w-0 max-w-[60%] truncate text-xs font-medium text-foreground">{triggerLabel}</span>
-        {selectedProject?.fullPath && (
-          <span
-            className="min-w-0 flex-1 truncate font-mono text-[10px] tracking-wide text-muted-foreground"
-            title={selectedProject.fullPath}
-          >
-            {selectedProject.fullPath}
-          </span>
-        )}
+        <Folder
+          className="h-3.5 w-3.5 flex-shrink-0 text-muted-foreground"
+          style={selectedProject?.color ? { color: selectedProject.color } : undefined}
+        />
+        <span className="min-w-0 flex-1 truncate text-xs font-medium text-foreground">{triggerLabel}</span>
         <ChevronDown
           className={cn(
             'h-3.5 w-3.5 flex-shrink-0 text-muted-foreground transition-transform duration-150 ease-out',
@@ -162,9 +162,11 @@ export default function SidebarProjectSelector({
                   isDeleting={deletingProjects.has(project.projectId)}
                   isEditing={editingProject === project.projectId}
                   editingName={editingName}
+                  editingColor={editingColor}
                   tasksEnabled={tasksEnabled}
                   mcpServerStatus={mcpServerStatus}
                   onEditingNameChange={onEditingNameChange}
+                  onEditingColorChange={onEditingColorChange}
                   onSelect={(candidate) => {
                     onProjectSelect(candidate);
                     setIsOpen(false);

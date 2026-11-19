@@ -1,4 +1,4 @@
-/** Project registry tools: list, create/clone, rename, flags, archive/delete and per-project status. */
+/** Project registry tools: list, create/clone, rename, color, flags, archive/delete and per-project status. */
 
 import type { JsonObject, ToolDefinition } from '../grokbot-mcp.types.js';
 
@@ -91,6 +91,13 @@ export const projectTools: ToolDefinition[] = [
     inputSchema: schema({ projectId: PROJECT_ID, displayName: S.string('New display name.') }, ['projectId', 'displayName']),
     covers: ['PUT /api/projects/:projectId/rename'],
     run: (args, ctx) => ctx.api.dispatch({ method: 'PUT', path: projectPath(args, '/rename'), body: { displayName: str(args, 'displayName') } }),
+  }),
+  tool({
+    name: 'project_set_color',
+    description: 'Set the color used to tell a project apart in the sidebar, as a #rrggbb hex value. Omit color to clear it.',
+    inputSchema: schema({ projectId: PROJECT_ID, color: S.string('Hex color such as #3b82f6. Omit to clear.') }, ['projectId']),
+    covers: ['PUT /api/projects/:projectId/color'],
+    run: (args, ctx) => ctx.api.dispatch({ method: 'PUT', path: projectPath(args, '/color'), body: { color: optStr(args, 'color') ?? null } }),
   }),
   tool({
     name: 'project_toggle_star',

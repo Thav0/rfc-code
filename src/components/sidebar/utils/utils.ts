@@ -81,6 +81,15 @@ export const getSessionTime = (session: SessionWithProvider): string => {
 };
 
 /**
+ * Last segment of a path. Paths come from the server host and may be
+ * Windows-style, so both separators are accepted.
+ */
+export const getPathBasename = (fullPath: string): string => {
+  const segments = fullPath.split(/[\\/]/).filter(Boolean);
+  return segments[segments.length - 1] ?? fullPath;
+};
+
+/**
  * Label for the worktree branch badge. The branch may be unresolvable (e.g. a
  * worktree created outside the app), so the basename of the worktree path is
  * the fallback; sessions without a worktree get no label and no badge.
@@ -96,10 +105,7 @@ export const getSessionWorktreeLabel = (session: ProjectSession): string | null 
     return worktreeBranch;
   }
 
-  // Basename that tolerates both separators, since paths come from the server
-  // host and may be Windows-style.
-  const segments = worktreePath.split(/[\\/]/).filter(Boolean);
-  return segments[segments.length - 1] ?? worktreePath;
+  return getPathBasename(worktreePath);
 };
 
 /**

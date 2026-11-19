@@ -48,6 +48,7 @@ export type ProjectListItem = {
     hasCodegraph: boolean;
   };
   notifyEnabled: boolean;
+  color: string | null;
   sessions: SessionSummary[];
   sessionMeta: {
     hasMore: boolean;
@@ -213,6 +214,7 @@ export async function getProjectsWithSessions(
     custom_project_name?: string | null;
     isStarred?: number;
     notifyEnabled?: number;
+    color?: string | null;
   }>;
   const totalProjects = projectRows.length;
   const projects: ProjectListItem[] = [];
@@ -251,6 +253,7 @@ export async function getProjectsWithSessions(
         hasCodegraph: await detectCodegraphIndex(projectPath),
       },
       notifyEnabled: Boolean(row.notifyEnabled),
+      color: row.color ?? null,
       sessions: sessionsPage.sessions,
       sessionMeta: {
         hasMore: sessionsPage.hasMore,
@@ -286,6 +289,7 @@ export async function getArchivedProjectsWithSessions(
     custom_project_name?: string | null;
     isStarred?: number;
     notifyEnabled?: number;
+    color?: string | null;
   }>;
 
   const archivedProjects: ArchivedProjectListItem[] = [];
@@ -305,6 +309,7 @@ export async function getArchivedProjectsWithSessions(
       fullPath: row.project_path,
       isStarred: Boolean(row.isStarred),
       notifyEnabled: Boolean(row.notifyEnabled),
+      color: row.color ?? null,
       isArchived: true,
       codegraph: {
         hasCodegraph: await detectCodegraphIndex(row.project_path),

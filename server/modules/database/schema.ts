@@ -93,7 +93,8 @@ CREATE TABLE IF NOT EXISTS projects (
     custom_project_name TEXT DEFAULT NULL,
     isStarred BOOLEAN DEFAULT 0,
     isArchived BOOLEAN DEFAULT 0,
-    notifyEnabled BOOLEAN DEFAULT 0
+    notifyEnabled BOOLEAN DEFAULT 0,
+    color TEXT DEFAULT NULL
 );
 `;
 

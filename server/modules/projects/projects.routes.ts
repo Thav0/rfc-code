@@ -9,6 +9,7 @@ import { getArchivedProjectsWithSessions, getProjectSessionsPage, getProjectsWit
 import { getProjectsCompact } from '@/modules/projects/services/projects-compact-list.service.js';
 import { deleteOrArchiveProject, restoreArchivedProject } from '@/modules/projects/services/project-delete.service.js';
 import { applyLegacyStarredProjectIds, toggleProjectStar } from '@/modules/projects/services/project-star.service.js';
+import { setProjectColor } from '@/modules/projects/services/project-color.service.js';
 import { toggleProjectNotify } from '@/modules/projects/services/project-notify.service.js';
 
 const router = express.Router();
@@ -278,6 +279,16 @@ router.post(
     const projectId = typeof req.params.projectId === 'string' ? req.params.projectId : '';
     const { notifyEnabled } = toggleProjectNotify(projectId);
     res.json({ success: true, notifyEnabled });
+  }),
+);
+
+router.put(
+  '/:projectId/color',
+  asyncHandler(async (req, res) => {
+    const projectId = typeof req.params.projectId === 'string' ? req.params.projectId : '';
+    const { color } = (req.body ?? {}) as { color?: unknown };
+    const result = setProjectColor(projectId, color);
+    res.json({ success: true, color: result.color });
   }),
 );
 
